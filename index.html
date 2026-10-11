@@ -6,10 +6,10 @@
 <title>📚 نظام بطاقات المذاكرة — إهداء من النجم للأحياء</title>
 <style>
 :root {
-  --c1: #e53e3e; --c1-bg: #fff5f5; --c1-border: #feb2b2;
-  --c2: #dd6b20; --c2-bg: #fffaf0; --c2-border: #fbd38d;
-  --c3: #d69e2e; --c3-bg: #fffff0; --c3-border: #f6e05e;
-  --c4: #38a169; --c4-bg: #f0fff4; --c4-border: #9ae6b4;
+  --cA: #e53e3e; --cA-bg: #fff5f5; --cA-border: #feb2b2;
+  --cB: #dd6b20; --cB-bg: #fffaf0; --cB-border: #fbd38d;
+  --cC: #d69e2e; --cC-bg: #fffff0; --cC-border: #f6e05e;
+  --cD: #38a169; --cD-bg: #f0fff4; --cD-border: #9ae6b4;
   --primary: #0d9e6e;
   --primary-dark: #07694a;
   --navy: #0f2744;
@@ -65,43 +65,6 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
 }
 .dedication span { color: #fff; }
 
-/* ===== Top Bar ===== */
-.top-bar {
-  background: var(--surface);
-  border-radius: 12px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-}
-.stats-mini {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.stat-mini {
-  text-align: center;
-  min-width: 65px;
-  padding: 6px 10px;
-  border-radius: 10px;
-  background: #f7fafc;
-  border: 1px solid var(--border);
-}
-.stat-mini .num { font-size: 16px; font-weight: bold; display: block; }
-.stat-mini .lbl { font-size: 9px; color: var(--text3); }
-.stat-mini.c1 { background: var(--c1-bg); border-color: var(--c1-border); }
-.stat-mini.c1 .num { color: var(--c1); }
-.stat-mini.c2 { background: var(--c2-bg); border-color: var(--c2-border); }
-.stat-mini.c2 .num { color: var(--c2); }
-.stat-mini.c3 { background: var(--c3-bg); border-color: var(--c3-border); }
-.stat-mini.c3 .num { color: var(--c3); }
-.stat-mini.c4 { background: var(--c4-bg); border-color: var(--c4-border); }
-.stat-mini.c4 .num { color: var(--c4); }
-
 /* ===== Filter ===== */
 .filter-bar {
   display: flex;
@@ -111,24 +74,37 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   margin-bottom: 15px;
 }
 .filter-btn {
-  padding: 7px 14px;
+  padding: 9px 18px;
   border-radius: 50px;
-  border: 1.5px solid var(--border);
+  border: 2px solid var(--border);
   background: var(--surface);
   color: var(--text2);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-.filter-btn:hover { transform: translateY(-1px); }
-.filter-btn.active { color: white; border-color: transparent; }
-.filter-btn[data-filter="all"].active { background: var(--text); }
-.filter-btn[data-filter="1"].active { background: var(--c1); }
-.filter-btn[data-filter="2"].active { background: var(--c2); }
-.filter-btn[data-filter="3"].active { background: var(--c3); color: #1a1a2e; }
-.filter-btn[data-filter="4"].active { background: var(--c4); }
+.filter-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.filter-btn.active { color: white; border-color: transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.filter-btn[data-filter="A"].active { background: var(--cA); }
+.filter-btn[data-filter="B"].active { background: var(--cB); }
+.filter-btn[data-filter="C"].active { background: var(--cC); color: #1a1a2e; }
+.filter-btn[data-filter="D"].active { background: var(--cD); }
+.filter-btn .dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.filter-btn[data-filter="A"] .dot { background: var(--cA); }
+.filter-btn[data-filter="B"] .dot { background: var(--cB); }
+.filter-btn[data-filter="C"] .dot { background: var(--cC); }
+.filter-btn[data-filter="D"] .dot { background: var(--cD); }
+.filter-btn.active .dot { background: white; }
 
 /* ===== Weeks Grid ===== */
 .weeks-grid {
@@ -217,14 +193,14 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
 
 /* ===== Card ===== */
 .card {
-  padding: 5px 10px;
+  padding: 6px 10px;
   border-radius: 7px;
   color: white;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 12px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   position: relative;
   cursor: pointer;
   transition: all 0.15s;
@@ -235,10 +211,10 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   transform: translateY(-2px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.25);
 }
-.card.attempts-1 { background: var(--c1); }
-.card.attempts-2 { background: var(--c2); }
-.card.attempts-3 { background: var(--c3); color: #1a1a2e; }
-.card.attempts-4 { background: var(--c4); }
+.card.attempts-A { background: var(--cA); }
+.card.attempts-B { background: var(--cB); }
+.card.attempts-C { background: var(--cC); color: #1a1a2e; }
+.card.attempts-D { background: var(--cD); }
 
 .card .card-actions {
   display: none;
@@ -257,7 +233,7 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   border-radius: 50%;
   width: 20px;
   height: 20px;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1;
   cursor: pointer;
   display: flex;
@@ -267,11 +243,10 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   font-family: inherit;
   font-weight: bold;
 }
-.card .card-btn.done {
+.card .card-btn.next {
   background: var(--primary);
-  font-size: 11px;
 }
-.card .card-btn.done:hover {
+.card .card-btn.next:hover {
   background: var(--primary-dark);
 }
 .card .card-btn.delete {
@@ -285,19 +260,7 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   cursor: not-allowed;
 }
 
-/* ===== Attempts Indicator ===== */
-.attempts-badge {
-  background: rgba(255,255,255,0.3);
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  font-size: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ===== Empty Week ===== */
+/* ===== Empty ===== */
 .empty-week {
   color: var(--text3);
   font-size: 11px;
@@ -334,9 +297,6 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   margin-bottom: 15px;
   color: var(--text);
   font-size: 16px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 .modal label {
   display: block;
@@ -362,6 +322,40 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   background: white;
   box-shadow: 0 0 0 3px rgba(13,158,110,0.1);
 }
+
+/* ===== Attempts Selector (in modal) ===== */
+.attempts-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  margin-top: 5px;
+}
+.attempts-option {
+  padding: 10px 6px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 16px;
+  transition: all 0.2s;
+  background: white;
+  color: var(--text2);
+}
+.attempts-option:hover { transform: translateY(-2px); }
+.attempts-option.selected { color: white; border-color: transparent; }
+.attempts-option.selected[data-att="A"] { background: var(--cA); }
+.attempts-option.selected[data-att="B"] { background: var(--cB); }
+.attempts-option.selected[data-att="C"] { background: var(--cC); color: #1a1a2e; }
+.attempts-option.selected[data-att="D"] { background: var(--cD); }
+.attempts-option .lbl {
+  font-size: 9px;
+  display: block;
+  margin-top: 2px;
+  opacity: 0.85;
+  font-weight: 500;
+}
+
 .modal-buttons {
   display: flex;
   gap: 8px;
@@ -437,10 +431,10 @@ button.secondary:hover { background: #f7fafc; }
 
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
-  .top-bar { flex-direction: column; align-items: stretch; }
   .weeks-grid { grid-template-columns: 1fr; }
   header h1 { font-size: 18px; }
   .day-label { min-width: 45px; font-size: 11px; }
+  .filter-btn { padding: 7px 12px; font-size: 12px; }
 }
 </style>
 </head>
@@ -448,45 +442,26 @@ button.secondary:hover { background: #f7fafc; }
 
 <header>
   <h1>📚 نظام بطاقات المذاكرة</h1>
-  <p>أضف بطاقات لكل يوم — ودوّس ✅ لما تذاكرها</p>
+  <p>أضف بطاقات لكل يوم — وتابع تقدمك</p>
   <div class="dedication">
     🎁 إهداء من <span>النجم للأحياء</span> — أ. عزت نجم • 77107247
   </div>
 </header>
 
-<!-- ===== Top Bar ===== -->
-<div class="top-bar">
-  <div class="stats-mini">
-    <div class="stat-mini">
-      <span class="num" id="totalCards">0</span>
-      <span class="lbl">إجمالي</span>
-    </div>
-    <div class="stat-mini c1">
-      <span class="num" id="count1">0</span>
-      <span class="lbl">🔴 مرة</span>
-    </div>
-    <div class="stat-mini c2">
-      <span class="num" id="count2">0</span>
-      <span class="lbl">🟠 مرتين</span>
-    </div>
-    <div class="stat-mini c3">
-      <span class="num" id="count3">0</span>
-      <span class="lbl">🟡 3 مرات</span>
-    </div>
-    <div class="stat-mini c4">
-      <span class="num" id="count4">0</span>
-      <span class="lbl">🟢 4 مرات</span>
-    </div>
-  </div>
-</div>
-
 <!-- ===== Filter ===== -->
 <div class="filter-bar">
-  <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">الكل</button>
-  <button class="filter-btn" data-filter="1" onclick="setFilter('1')">🔴 مرة واحدة</button>
-  <button class="filter-btn" data-filter="2" onclick="setFilter('2')">🟠 مرتين</button>
-  <button class="filter-btn" data-filter="3" onclick="setFilter('3')">🟡 3 مرات</button>
-  <button class="filter-btn" data-filter="4" onclick="setFilter('4')">🟢 4 مرات</button>
+  <button class="filter-btn active" data-filter="A" onclick="setFilter('A')">
+    <span class="dot"></span> المذاكرة الأولى (A)
+  </button>
+  <button class="filter-btn" data-filter="B" onclick="setFilter('B')">
+    <span class="dot"></span> المذاكرة الثانية (B)
+  </button>
+  <button class="filter-btn" data-filter="C" onclick="setFilter('C')">
+    <span class="dot"></span> المذاكرة الثالثة (C)
+  </button>
+  <button class="filter-btn" data-filter="D" onclick="setFilter('D')">
+    <span class="dot"></span> المذاكرة الرابعة (D)
+  </button>
 </div>
 
 <!-- ===== Weeks Grid ===== -->
@@ -521,6 +496,22 @@ button.secondary:hover { background: #f7fafc; }
     <label>📖 رقم المحاضرة (1 - 13)</label>
     <input type="number" id="cardNum" value="1" min="1" max="13">
     
+    <label>🔁 المذاكرة</label>
+    <div class="attempts-selector">
+      <div class="attempts-option" data-att="A" onclick="selectAttempt('A')">
+        A<span class="lbl">الأولى</span>
+      </div>
+      <div class="attempts-option" data-att="B" onclick="selectAttempt('B')">
+        B<span class="lbl">الثانية</span>
+      </div>
+      <div class="attempts-option" data-att="C" onclick="selectAttempt('C')">
+        C<span class="lbl">الثالثة</span>
+      </div>
+      <div class="attempts-option" data-att="D" onclick="selectAttempt('D')">
+        D<span class="lbl">الرابعة</span>
+      </div>
+    </div>
+    
     <div class="modal-buttons">
       <button onclick="closeModal()" class="secondary">إلغاء</button>
       <button onclick="saveCard()" class="success">💾 حفظ</button>
@@ -537,6 +528,14 @@ const SUBJECTS = {
   'ر': 'رياضيات', 'س': 'حاسوب', 'ع': 'عربي', 'إ': 'إنجليزي'
 };
 
+const ATTEMPTS = ['A', 'B', 'C', 'D'];
+const ATTEMPTS_LABEL = {
+  'A': 'المذاكرة الأولى',
+  'B': 'المذاكرة الثانية',
+  'C': 'المذاكرة الثالثة',
+  'D': 'المذاكرة الرابعة'
+};
+
 const NUM_WEEKS = 13;
 const DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة'];
 
@@ -544,20 +543,23 @@ const DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 
 // STATE
 // ================================================================
 let state = {
-  // weeks[weekNum][dayIndex] = [{ subject, num, attempts, addedAt }]
+  // weeks[weekNum][dayIndex] = [{ subject, num, attempt, addedAt }]
   weeks: {},
-  filter: 'all'
+  filter: 'A',
+  lastAttempt: 'A'  // آخر اختيار للمذاكرة
 };
 
 // ================================================================
 // STORAGE
 // ================================================================
 function loadState() {
-  const saved = localStorage.getItem('studyCards_v6');
+  const saved = localStorage.getItem('studyCards_v7');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
       state.weeks = parsed.weeks || {};
+      state.filter = parsed.filter || 'A';
+      state.lastAttempt = parsed.lastAttempt || 'A';
     } catch(e) { console.error(e); }
   }
   // تأكد إن كل الأسابيع والأيام موجودة
@@ -569,7 +571,11 @@ function loadState() {
   }
 }
 function saveState() {
-  localStorage.setItem('studyCards_v6', JSON.stringify({ weeks: state.weeks }));
+  localStorage.setItem('studyCards_v7', JSON.stringify({
+    weeks: state.weeks,
+    filter: state.filter,
+    lastAttempt: state.lastAttempt
+  }));
 }
 
 // ================================================================
@@ -577,6 +583,14 @@ function saveState() {
 // ================================================================
 let currentModalWeek = 1;
 let currentModalDay = 0;
+let selectedAttempt = 'A';
+
+function getNextAttempt() {
+  // الافتراضي = آخر اختيار + 1
+  const idx = ATTEMPTS.indexOf(state.lastAttempt);
+  if (idx === -1 || idx >= ATTEMPTS.length - 1) return 'A';
+  return ATTEMPTS[idx + 1];
+}
 
 function openAddModal(weekNum, dayIndex) {
   currentModalWeek = weekNum;
@@ -585,8 +599,24 @@ function openAddModal(weekNum, dayIndex) {
     `➕ إضافة بطاقة — الأسبوع ${weekNum} / ${DAYS[dayIndex]}`;
   document.getElementById('cardSubject').value = 'ك';
   document.getElementById('cardNum').value = 1;
+  
+  // الافتراضي = آخر اختيار + 1
+  selectedAttempt = getNextAttempt();
+  updateAttemptsSelector();
+  
   document.getElementById('cardModal').classList.add('show');
   setTimeout(() => document.getElementById('cardNum').focus(), 100);
+}
+
+function selectAttempt(att) {
+  selectedAttempt = att;
+  updateAttemptsSelector();
+}
+
+function updateAttemptsSelector() {
+  document.querySelectorAll('.attempts-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.att === selectedAttempt);
+  });
 }
 
 function closeModal() {
@@ -605,14 +635,16 @@ function saveCard() {
   state.weeks[currentModalWeek][currentModalDay].push({
     subject,
     num,
-    attempts: 1,           // يبدأ بـ 1 (مرة واحدة)
-    addedAt: Date.now()    // وقت الإضافة (للترتيب)
+    attempt: selectedAttempt,
+    addedAt: Date.now()
   });
 
+  // احفظ آخر اختيار
+  state.lastAttempt = selectedAttempt;
   saveState();
   closeModal();
   renderAll();
-  showToast(`✅ تمت إضافة ${subject}${num}`);
+  showToast(`✅ تمت إضافة ${subject}${num} — ${ATTEMPTS_LABEL[selectedAttempt]}`);
 }
 
 // ================================================================
@@ -626,17 +658,17 @@ function deleteCard(weekNum, dayIndex, cardIndex) {
   showToast('🗑️ تم حذف البطاقة');
 }
 
-function markAsStudied(weekNum, dayIndex, cardIndex) {
+function nextAttempt(weekNum, dayIndex, cardIndex) {
   const card = state.weeks[weekNum][dayIndex][cardIndex];
-  if (card.attempts >= 4) {
-    showToast('✅ البطاقة وصلت للحد الأقصى (4 مرات)');
+  const idx = ATTEMPTS.indexOf(card.attempt);
+  if (idx === -1 || idx >= ATTEMPTS.length - 1) {
+    showToast('✅ البطاقة وصلت للمذاكرة الرابعة (D)');
     return;
   }
-  card.attempts++;
+  card.attempt = ATTEMPTS[idx + 1];
   saveState();
   renderAll();
-  const colors = { 2: '🟠 برتقالي', 3: '🟡 أصفر', 4: '🟢 أخضر' };
-  showToast(`✅ تمت المذاكرة — اللون: ${colors[card.attempts]}`);
+  showToast(`⬆️ ${ATTEMPTS_LABEL[card.attempt]}`);
 }
 
 // ================================================================
@@ -647,6 +679,7 @@ function setFilter(filter) {
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.filter === filter);
   });
+  saveState();
   renderAll();
 }
 
@@ -655,7 +688,6 @@ function setFilter(filter) {
 // ================================================================
 function renderAll() {
   renderWeeks();
-  updateStats();
 }
 
 function renderWeeks() {
@@ -663,52 +695,42 @@ function renderWeeks() {
   grid.innerHTML = '';
 
   for (let w = 1; w <= NUM_WEEKS; w++) {
-    // اجمع كل البطاقات في الأسبوع
+    // اجمع كل البطاقات في الأسبوع المطابقة للفلتر
     const weekCards = [];
     for (let d = 0; d < 7; d++) {
       state.weeks[w][d].forEach((card, idx) => {
-        weekCards.push({ card, day: d, cardIdx: idx });
+        if (card.attempt === state.filter) {
+          weekCards.push({ card, day: d, cardIdx: idx });
+        }
       });
     }
 
-    // فلترة
-    let displayWeekCards = weekCards;
-    if (state.filter !== 'all') {
-      const filterNum = parseInt(state.filter);
-      displayWeekCards = weekCards.filter(item => item.card.attempts === filterNum);
-    }
+    // لو مفيش بطاقات مطابقة للفلتر، ما نعرضش الأسبوع
+    if (weekCards.length === 0) continue;
 
-    // لو الفلتر مش "الكل" ومفيش بطاقات، ما نعرضش الأسبوع
-    if (state.filter !== 'all' && displayWeekCards.length === 0) continue;
-
-    // ترتيب: الأقدم أولاً (حسب addedAt)
-    displayWeekCards.sort((a, b) => a.card.addedAt - b.card.addedAt);
+    // ترتيب: الأقدم أولاً
+    weekCards.sort((a, b) => a.card.addedAt - b.card.addedAt);
 
     const box = document.createElement('div');
     box.className = 'week-box';
 
     let daysHtml = '';
     for (let d = 0; d < 7; d++) {
-      let dayCards;
-      if (state.filter === 'all') {
-        dayCards = state.weeks[w][d].map((card, idx) => ({ card, idx }));
-        // ترتيب: الأقدم أولاً
-        dayCards.sort((a, b) => a.card.addedAt - b.card.addedAt);
-      } else {
-        const filterNum = parseInt(state.filter);
-        dayCards = state.weeks[w][d]
-          .map((card, idx) => ({ card, idx }))
-          .filter(item => item.card.attempts === filterNum);
-      }
+      const dayCards = state.weeks[w][d]
+        .map((card, idx) => ({ card, idx }))
+        .filter(item => item.card.attempt === state.filter);
+      
+      // ترتيب: الأقدم أولاً
+      dayCards.sort((a, b) => a.card.addedAt - b.card.addedAt);
 
       const cardsHtml = dayCards.length === 0
-        ? '<span class="empty-week">—</span>'
+        ? ''
         : dayCards.map(item => createCardHtml(item.card, w, d, item.idx)).join('');
 
       daysHtml += `
         <div class="day-row">
           <div class="day-label">${DAYS[d]}</div>
-          <div class="day-cards">${cardsHtml}</div>
+          <div class="day-cards">${cardsHtml || '<span class="empty-week">—</span>'}</div>
           <button class="day-add-btn" onclick="openAddModal(${w}, ${d})" title="إضافة بطاقة">+</button>
         </div>
       `;
@@ -727,50 +749,29 @@ function renderWeeks() {
 
   if (grid.children.length === 0) {
     grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text3);">
-      <div style="font-size:48px;margin-bottom:10px;">🔍</div>
-      <div>لا توجد بطاقات مطابقة للفلتر المحدد</div>
+      <div style="font-size:48px;margin-bottom:10px;">📭</div>
+      <div>لا توجد بطاقات في ${ATTEMPTS_LABEL[state.filter]}</div>
+      <div style="font-size:12px;margin-top:8px;">اضغط ➕ في أي يوم لإضافة بطاقة</div>
     </div>`;
   }
 }
 
 function createCardHtml(card, weekNum, dayIndex, cardIndex) {
-  const attempts = card.attempts || 1;
-  const canMark = attempts < 4;
+  const canNext = card.attempt !== 'D';
   return `
-    <div class="card attempts-${attempts}" title="${SUBJECTS[card.subject] || card.subject} - محاضرة ${card.num} - تمت المذاكرة ${attempts} مرة">
-      <span>${card.subject}${card.num}</span>
-      <span class="attempts-badge">${attempts}</span>
+    <div class="card attempts-${card.attempt}" title="${SUBJECTS[card.subject] || card.subject} - محاضرة ${card.num} - ${ATTEMPTS_LABEL[card.attempt]}">
+      <span>${card.subject}${card.num} ${card.attempt}</span>
       <div class="card-actions">
-        <button class="card-btn done" 
-                onclick="event.stopPropagation(); markAsStudied(${weekNum}, ${dayIndex}, ${cardIndex})" 
-                title="${canMark ? 'تمت المذاكرة' : 'وصلت للحد الأقصى'}"
-                ${!canMark ? 'disabled' : ''}>✅</button>
+        <button class="card-btn next" 
+                onclick="event.stopPropagation(); nextAttempt(${weekNum}, ${dayIndex}, ${cardIndex})" 
+                title="${canNext ? 'الانتقال للمذاكرة التالية' : 'وصلت للحد الأقصى'}"
+                ${!canNext ? 'disabled' : ''}>⬆</button>
         <button class="card-btn delete" 
                 onclick="event.stopPropagation(); deleteCard(${weekNum}, ${dayIndex}, ${cardIndex})" 
                 title="حذف">×</button>
       </div>
     </div>
   `;
-}
-
-function updateStats() {
-  let total = 0, c1 = 0, c2 = 0, c3 = 0, c4 = 0;
-  for (let w = 1; w <= NUM_WEEKS; w++) {
-    for (let d = 0; d < 7; d++) {
-      state.weeks[w][d].forEach(card => {
-        total++;
-        if (card.attempts === 1) c1++;
-        else if (card.attempts === 2) c2++;
-        else if (card.attempts === 3) c3++;
-        else if (card.attempts === 4) c4++;
-      });
-    }
-  }
-  document.getElementById('totalCards').textContent = total;
-  document.getElementById('count1').textContent = c1;
-  document.getElementById('count2').textContent = c2;
-  document.getElementById('count3').textContent = c3;
-  document.getElementById('count4').textContent = c4;
 }
 
 // ================================================================
@@ -802,7 +803,7 @@ function showToast(msg) {
     t.style.opacity = '0';
     t.style.transition = 'opacity 0.3s';
     setTimeout(() => t.remove(), 300);
-  }, 2000);
+  }, 1800);
 }
 
 // ================================================================
@@ -810,6 +811,10 @@ function showToast(msg) {
 // ================================================================
 function init() {
   loadState();
+  // فعّل الفلتر المحفوظ
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === state.filter);
+  });
   renderAll();
 }
 
