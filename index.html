@@ -96,6 +96,7 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
 }
 .filter-btn:hover { transform: translateY(-1px); }
 .filter-btn.active { color: white; border-color: transparent; }
+.filter-btn[data-filter="all"].active { background: var(--text); }
 .filter-btn[data-filter="A"].active { background: var(--a-color); }
 .filter-btn[data-filter="B"].active { background: var(--b-color); }
 .filter-btn[data-filter="C"].active { background: var(--c-color); color: #1a1a2e; }
@@ -237,12 +238,6 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   padding: 0;
   font-family: inherit;
   font-weight: bold;
-}
-.card .card-btn.upgrade {
-  background: var(--primary);
-}
-.card .card-btn.upgrade:hover {
-  background: var(--primary-dark);
 }
 .card .card-btn.delete {
   background: #c53030;
@@ -443,7 +438,8 @@ button.whatsapp:hover { background: #1da851; }
 
 <!-- ===== Filter ===== -->
 <div class="filter-bar">
-  <button class="filter-btn active" data-filter="A" onclick="setFilter('A')">🔴 A — المذاكرة الأولى</button>
+  <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">الكل</button>
+  <button class="filter-btn" data-filter="A" onclick="setFilter('A')">🔴 A — المذاكرة الأولى</button>
   <button class="filter-btn" data-filter="B" onclick="setFilter('B')">🟠 B — الثانية</button>
   <button class="filter-btn" data-filter="C" onclick="setFilter('C')">🟡 C — الثالثة</button>
   <button class="filter-btn" data-filter="D" onclick="setFilter('D')">🟢 D — الرابعة</button>
@@ -540,7 +536,7 @@ const TYPES = ['A', 'B', 'C', 'D'];
 let state = {
   // weeks[weekNum][dayIndex] = [{ subject, num, type }]
   weeks: {},
-  filter: 'A'
+  filter: 'all'
 };
 
 // وضع المشاهدة: يُفعَّل عندما يفتح أحد رابط المشاركة (#v=...)
@@ -595,7 +591,7 @@ function openAddModal(weekNum, dayIndex) {
     `➕ إضافة بطاقة — الأسبوع ${weekNum} / ${DAYS[dayIndex]}`;
   document.getElementById('cardSubject').value = 'ك';
   document.getElementById('cardNum').value = 1;
-  document.getElementById('cardType').value = state.filter;
+  document.getElementById('cardType').value = state.filter === 'all' ? 'A' : state.filter;
   document.getElementById('cardModal').classList.add('show');
   setTimeout(() => document.getElementById('cardNum').focus(), 100);
 }
@@ -628,7 +624,7 @@ function saveCard() {
 }
 
 // ================================================================
-// DELETE + UPGRADE
+// DELETE
 // ================================================================
 function deleteCard(weekNum, dayIndex, cardIndex) {
   if (viewMode) return;
@@ -637,20 +633,6 @@ function deleteCard(weekNum, dayIndex, cardIndex) {
   saveState();
   renderAll();
   showToast('🗑️ تم حذف البطاقة');
-}
-
-function upgradeCard(weekNum, dayIndex, cardIndex) {
-  if (viewMode) return;
-  const card = state.weeks[weekNum][dayIndex][cardIndex];
-  const currentIdx = TYPES.indexOf(card.type);
-  if (currentIdx === -1 || currentIdx >= TYPES.length - 1) {
-    showToast('✅ البطاقة وصلت للتكرار النهائي (D)');
-    return;
-  }
-  card.type = TYPES[currentIdx + 1];
-  saveState();
-  renderAll();
-  showToast(`⬆️ تمت الترقية إلى ${card.type}`);
 }
 
 // ================================================================
@@ -671,9 +653,25 @@ function renderAll() {
   renderWeeks();
 }
 
+// أعلى مرحلة وصلت لها كل محاضرة (مادة + رقم) عبر كل الأسابيع
+function computeHighestTypes() {
+  const highest = {};
+  for (let w = 1; w <= NUM_WEEKS; w++) {
+    for (let d = 0; d < 7; d++) {
+      state.weeks[w][d].forEach(c => {
+        const key = c.subject + c.num;
+        const lvl = TYPES.indexOf(c.type);
+        if (highest[key] === undefined || lvl > highest[key]) highest[key] = lvl;
+      });
+    }
+  }
+  return highest;
+}
+
 function renderWeeks() {
   const grid = document.getElementById('weeksGrid');
   grid.innerHTML = '';
+  const highest = computeHighestTypes();
 
   for (let w = 1; w <= NUM_WEEKS; w++) {
     // اجمع كل البطاقات في الأسبوع
@@ -687,7 +685,10 @@ function renderWeeks() {
     // فلترة
     let displayWeekCards = weekCards;
     if (state.filter !== 'all') {
-      displayWeekCards = weekCards.filter(item => item.card.type === state.filter);
+      displayWeekCards = weekCards.filter(item =>
+        item.card.type === state.filter &&
+        highest[item.card.subject + item.card.num] === TYPES.indexOf(item.card.type)
+      );
     }
 
     // الطالب يرى كل الأسابيع ليتمكن من الإضافة؛ المشاهد لا يرى الأسابيع الفارغة
@@ -757,17 +758,10 @@ function renderWeeks() {
 }
 
 function createCardHtml(card, weekNum, dayIndex, cardIndex) {
-  const canUpgrade = card.type !== 'D';
-  const upgradeTitle = canUpgrade ? `ترقية إلى ${TYPES[TYPES.indexOf(card.type) + 1]}` : 'وصلت للنهاية';
-  
   return `
     <div class="card type-${card.type}" title="${SUBJECTS[card.subject] || card.subject} - محاضرة ${card.num} - التكرار ${card.type}">
       <span>${card.subject}${card.num} ${card.type}</span>
       <div class="card-actions">
-        <button class="card-btn upgrade" 
-                onclick="event.stopPropagation(); upgradeCard(${weekNum}, ${dayIndex}, ${cardIndex})" 
-                title="${upgradeTitle}"
-                ${!canUpgrade ? 'disabled' : ''}>⬆</button>
         <button class="card-btn delete" 
                 onclick="event.stopPropagation(); deleteCard(${weekNum}, ${dayIndex}, ${cardIndex})" 
                 title="حذف">×</button>
