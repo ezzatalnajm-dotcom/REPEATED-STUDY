@@ -465,7 +465,7 @@ button.whatsapp:hover { background: #1da851; }
     <h3 id="modalTitle">➕ إضافة بطاقة</h3>
     
     <label>📚 المادة</label>
-    <select id="cardSubject">
+    <select id="cardSubject" onchange="suggestNextType()">
       <option value="ك">كيمياء (ك)</option>
       <option value="ح">أحياء (ح)</option>
       <option value="ف">فيزياء (ف)</option>
@@ -477,7 +477,7 @@ button.whatsapp:hover { background: #1da851; }
     </select>
     
     <label>📖 رقم المحاضرة (1 - 13)</label>
-    <input type="number" id="cardNum" value="1" min="1" max="13">
+    <input type="number" id="cardNum" value="1" min="1" max="13" oninput="suggestNextType()">
 
     <label>🔁 رقم المذاكرة</label>
     <select id="cardType">
@@ -592,9 +592,19 @@ function openAddModal(weekNum, dayIndex) {
     `➕ إضافة بطاقة — الأسبوع ${weekNum} / ${DAYS[dayIndex]}`;
   document.getElementById('cardSubject').value = 'ك';
   document.getElementById('cardNum').value = 1;
-  document.getElementById('cardType').value = state.filter === 'all' ? 'A' : state.filter;
+  suggestNextType();
   document.getElementById('cardModal').classList.add('show');
   setTimeout(() => document.getElementById('cardNum').focus(), 100);
+}
+
+// اقتراح المرحلة التالية تلقائياً: أول مرة A، ثم B، ثم C، ثم D (يمكن تغييرها يدوياً)
+function suggestNextType() {
+  const subject = document.getElementById('cardSubject').value;
+  const num = parseInt(document.getElementById('cardNum').value);
+  if (!num) return;
+  const h = computeHighestTypes()[subject + num];
+  const next = h === undefined ? 0 : Math.min(h + 1, TYPES.length - 1);
+  document.getElementById('cardType').value = TYPES[next];
 }
 
 function closeModal() {
