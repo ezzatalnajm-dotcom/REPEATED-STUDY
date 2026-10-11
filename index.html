@@ -109,7 +109,7 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
 /* ===== Weeks Grid ===== */
 .weeks-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 15px;
   margin-bottom: 25px;
 }
@@ -149,7 +149,7 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   padding: 8px 12px;
   border-bottom: 1px solid #f7fafc;
   gap: 8px;
-  min-height: 42px;
+  min-height: 44px;
 }
 .day-row:last-child { border-bottom: none; }
 .day-label {
@@ -157,24 +157,24 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   color: var(--text2);
   font-weight: 600;
   min-width: 55px;
-  padding-top: 4px;
+  padding-top: 5px;
 }
 .day-cards {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   flex: 1;
-  min-height: 26px;
+  min-height: 28px;
   align-items: flex-start;
 }
 .day-add-btn {
   background: var(--primary);
   color: white;
   border: none;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -200,7 +200,7 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   font-size: 12px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   position: relative;
   cursor: pointer;
   transition: all 0.15s;
@@ -322,40 +322,6 @@ header p { opacity: 0.85; font-size: 13px; margin-bottom: 10px; position: relati
   background: white;
   box-shadow: 0 0 0 3px rgba(13,158,110,0.1);
 }
-
-/* ===== Attempts Selector (in modal) ===== */
-.attempts-selector {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
-  margin-top: 5px;
-}
-.attempts-option {
-  padding: 10px 6px;
-  border: 2px solid var(--border);
-  border-radius: 10px;
-  text-align: center;
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 16px;
-  transition: all 0.2s;
-  background: white;
-  color: var(--text2);
-}
-.attempts-option:hover { transform: translateY(-2px); }
-.attempts-option.selected { color: white; border-color: transparent; }
-.attempts-option.selected[data-att="A"] { background: var(--cA); }
-.attempts-option.selected[data-att="B"] { background: var(--cB); }
-.attempts-option.selected[data-att="C"] { background: var(--cC); color: #1a1a2e; }
-.attempts-option.selected[data-att="D"] { background: var(--cD); }
-.attempts-option .lbl {
-  font-size: 9px;
-  display: block;
-  margin-top: 2px;
-  opacity: 0.85;
-  font-weight: 500;
-}
-
 .modal-buttons {
   display: flex;
   gap: 8px;
@@ -497,20 +463,12 @@ button.secondary:hover { background: #f7fafc; }
     <input type="number" id="cardNum" value="1" min="1" max="13">
     
     <label>🔁 المذاكرة</label>
-    <div class="attempts-selector">
-      <div class="attempts-option" data-att="A" onclick="selectAttempt('A')">
-        A<span class="lbl">الأولى</span>
-      </div>
-      <div class="attempts-option" data-att="B" onclick="selectAttempt('B')">
-        B<span class="lbl">الثانية</span>
-      </div>
-      <div class="attempts-option" data-att="C" onclick="selectAttempt('C')">
-        C<span class="lbl">الثالثة</span>
-      </div>
-      <div class="attempts-option" data-att="D" onclick="selectAttempt('D')">
-        D<span class="lbl">الرابعة</span>
-      </div>
-    </div>
+    <select id="cardAttempt">
+      <option value="A">المذاكرة الأولى (A)</option>
+      <option value="B">المذاكرة الثانية (B)</option>
+      <option value="C">المذاكرة الثالثة (C)</option>
+      <option value="D">المذاكرة الرابعة (D)</option>
+    </select>
     
     <div class="modal-buttons">
       <button onclick="closeModal()" class="secondary">إلغاء</button>
@@ -543,17 +501,16 @@ const DAYS = ['السبت', 'الأحد', 'الاثنين', 'الثلاثاء', 
 // STATE
 // ================================================================
 let state = {
-  // weeks[weekNum][dayIndex] = [{ subject, num, attempt, addedAt }]
   weeks: {},
   filter: 'A',
-  lastAttempt: 'A'  // آخر اختيار للمذاكرة
+  lastAttempt: 'A'
 };
 
 // ================================================================
 // STORAGE
 // ================================================================
 function loadState() {
-  const saved = localStorage.getItem('studyCards_v7');
+  const saved = localStorage.getItem('studyCards_v8');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
@@ -571,7 +528,7 @@ function loadState() {
   }
 }
 function saveState() {
-  localStorage.setItem('studyCards_v7', JSON.stringify({
+  localStorage.setItem('studyCards_v8', JSON.stringify({
     weeks: state.weeks,
     filter: state.filter,
     lastAttempt: state.lastAttempt
@@ -583,7 +540,6 @@ function saveState() {
 // ================================================================
 let currentModalWeek = 1;
 let currentModalDay = 0;
-let selectedAttempt = 'A';
 
 function getNextAttempt() {
   // الافتراضي = آخر اختيار + 1
@@ -601,22 +557,11 @@ function openAddModal(weekNum, dayIndex) {
   document.getElementById('cardNum').value = 1;
   
   // الافتراضي = آخر اختيار + 1
-  selectedAttempt = getNextAttempt();
-  updateAttemptsSelector();
+  const nextAtt = getNextAttempt();
+  document.getElementById('cardAttempt').value = nextAtt;
   
   document.getElementById('cardModal').classList.add('show');
   setTimeout(() => document.getElementById('cardNum').focus(), 100);
-}
-
-function selectAttempt(att) {
-  selectedAttempt = att;
-  updateAttemptsSelector();
-}
-
-function updateAttemptsSelector() {
-  document.querySelectorAll('.attempts-option').forEach(el => {
-    el.classList.toggle('selected', el.dataset.att === selectedAttempt);
-  });
 }
 
 function closeModal() {
@@ -626,6 +571,7 @@ function closeModal() {
 function saveCard() {
   const subject = document.getElementById('cardSubject').value;
   const num = parseInt(document.getElementById('cardNum').value) || 1;
+  const attempt = document.getElementById('cardAttempt').value;
 
   if (num < 1 || num > 13) {
     showToast('⚠️ رقم المحاضرة يجب أن يكون بين 1 و 13');
@@ -635,16 +581,16 @@ function saveCard() {
   state.weeks[currentModalWeek][currentModalDay].push({
     subject,
     num,
-    attempt: selectedAttempt,
+    attempt,
     addedAt: Date.now()
   });
 
   // احفظ آخر اختيار
-  state.lastAttempt = selectedAttempt;
+  state.lastAttempt = attempt;
   saveState();
   closeModal();
   renderAll();
-  showToast(`✅ تمت إضافة ${subject}${num} — ${ATTEMPTS_LABEL[selectedAttempt]}`);
+  showToast(`✅ تمت إضافة ${subject}${num} ${attempt}`);
 }
 
 // ================================================================
@@ -724,13 +670,13 @@ function renderWeeks() {
       dayCards.sort((a, b) => a.card.addedAt - b.card.addedAt);
 
       const cardsHtml = dayCards.length === 0
-        ? ''
+        ? '<span class="empty-week">—</span>'
         : dayCards.map(item => createCardHtml(item.card, w, d, item.idx)).join('');
 
       daysHtml += `
         <div class="day-row">
           <div class="day-label">${DAYS[d]}</div>
-          <div class="day-cards">${cardsHtml || '<span class="empty-week">—</span>'}</div>
+          <div class="day-cards">${cardsHtml}</div>
           <button class="day-add-btn" onclick="openAddModal(${w}, ${d})" title="إضافة بطاقة">+</button>
         </div>
       `;
